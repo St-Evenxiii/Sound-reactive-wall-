@@ -28,3 +28,22 @@ jobs:
         run: pytest -q
       - name: Generate netlist + schematic
         run: python sound_reactive_wall.py | tee gen.txt && ! grep -q "generation failed" gen.txt
+
+  firmware-host-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: DSP unit tests + sketch simulation
+        working-directory: firmware/test
+        run: |
+          g++ -std=c++11 -Wall -Wextra -Werror -I. -I../sound_reactive_wall test_firmware.cpp -o test_firmware
+          ./test_firmware
+
+  firmware-compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: arduino/compile-sketches@v1
+        with:
+          fqbn: arduino:avr:uno
+          sketch-paths: firmware/sound_reactive_wall
