@@ -37,6 +37,9 @@ The carrier PCB is described in code with [SKiDL](https://github.com/devbisme/sk
   feed more than 5.5 V into J1**, and preferably unplug the external supply
   while the UNO is on USB.
 * Each filament output terminal is `+5V` (pin 1) / MOSFET drain (pin 2).
+  The board has no current limiting on these outputs: put each filament
+  string's series resistor in the wiring off the board, sized for the
+  filament's rated voltage and current.
 
 ### Audio
 
@@ -70,13 +73,78 @@ Settings at the top of the sketch:
 Further tuning (noise floor, attack/release, gamma) is in `audio_dsp.h`.
 If the lights flicker in a silent room, raise `kNoiseFloor`.
 
-### Bringing it up
+## Breadboard bring-up
 
-1. Set `DEBUG_SERIAL 1` and `ALWAYS_ON 1`, upload, and open the Serial Monitor.
-2. In silence, note the band values `b0..b6`; set `kNoiseFloor` just above them.
-3. Note the LDR value with the room lit and dark; set `LDR_DARK_ABOVE` /
-   `LDR_LIGHT_BELOW` between them (or flip `LDR_DARK_WHEN_HIGH`).
-4. Set both flags back to 0 and upload.
+Every part is through-hole or a plug-in module, so the circuit can be proven
+on a breadboard before the PCB is made. Start with ordinary LEDs on USB power,
+then move to the filaments.
+
+### Parts
+
+* Arduino UNO, MSGEQ7 module, MAX4466 mic module, 4-pin LDR module
+* 3× IRLZ44N, 3× 220 Ω, 3× 10 kΩ
+* 100 nF ceramic and 100–1000 µF electrolytic capacitor
+* For the first test: 3 ordinary LEDs and 3× 220 Ω resistors
+
+Leave out the screw terminals (wrong pitch; use jumpers) and the fuse (USB is
+current-limited).
+
+### Wiring
+
+Same nets as the PCB:
+
+| UNO pin | Connects to |
+|---|---|
+| 5V | + rail: MSGEQ7 5V, mic VCC, LDR VCC |
+| GND | − rail: all module GNDs, the three MOSFET sources |
+| D3 / D6 / D9 | 220 Ω → bass / mids / treble MOSFET gate; 10 kΩ from each gate to GND |
+| A0 | MSGEQ7 OUT |
+| D4 | MSGEQ7 RESET |
+| D5 | MSGEQ7 STROBE |
+| A1 | LDR AO |
+| D2 | LDR DO |
+| — | Mic OUT + GND → MSGEQ7 module's audio input |
+
+* IRLZ44N legs, printed side facing you: **gate, drain, source**.
+* 100 nF across the rails next to the MSGEQ7; the electrolytic across the
+  rails anywhere (stripe to GND).
+* Test load for each channel: + rail → 220 Ω → LED → MOSFET drain (~15 mA).
+
+> **Bare MSGEQ7 chip instead of a module?** It needs a clock resistor and
+> capacitor, an input coupling capacitor and resistor, and a capacitor on its
+> reference pin. That pin is labelled GND but sits at about 2.5 V, so don't
+> wire it to ground. Take the values from the MSGEQ7 datasheet.
+
+### Steps
+
+1. Set `ALWAYS_ON 1` and `DEBUG_SERIAL 1` at the top of the sketch, upload,
+   and open the Serial Monitor at 115200 baud.
+2. **Noise floor:** in silence, note the band values `b0..b6`, and set
+   `kNoiseFloor` in `audio_dsp.h` just above them.
+3. **Audio path:** clap or play music; the band values should jump. If they
+   stay at 0 or at 1023, check the RESET/STROBE wiring and the audio jumper.
+4. **Channels:** play test tones from a phone tone generator. 100 Hz should
+   light mainly bass, 1 kHz mainly mids, 10 kHz mainly treble (the MSGEQ7's
+   bands are wide, so a little spill into the neighbour is normal).
+5. **LDR:** note the LDR reading with the room lit and with the sensor
+   covered. Set `LDR_DARK_ABOVE` / `LDR_LIGHT_BELOW` between them, or flip
+   `LDR_DARK_WHEN_HIGH` if it reads lower in the dark.
+6. Set `ALWAYS_ON 0`, upload, and check that the LEDs fade in when you cover
+   the LDR and fade out when you uncover it.
+7. Set `DEBUG_SERIAL 0` for the final upload.
+
+### Moving to the filaments
+
+* Size each filament's series resistor (off the board) before connecting it.
+* **Switch to the external 5 V supply and unplug USB.** USB can't supply the
+  filaments, and the external supply feeds the UNO's 5V pin directly, so the
+  two would fight if both were connected.
+* **Breadboard contacts are rated around 1 A.** Run the filament + wires and
+  the MOSFET source-to-GND returns directly to the supply, not through the
+  breadboard; only the gate and signal wiring should stay on it.
+* If a MOSFET runs hot, check the gate is reaching 5 V and the source return
+  is solid; at a few amps per channel the IRLZ44N should stay cool without a
+  heatsink.
 
 ## Regenerating / testing
 
