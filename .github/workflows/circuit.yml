@@ -43,7 +43,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: arduino/compile-sketches@v1
-        with:
-          fqbn: arduino:avr:uno
-          sketch-paths: firmware/sound_reactive_wall
+      # Calls arduino-cli directly: arduino/compile-sketches@v1 pins a Python
+      # version that isn't available on current ubuntu-latest runners.
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Install AVR core
+        run: |
+          arduino-cli core update-index
+          arduino-cli core install arduino:avr
+      - name: Compile for Arduino UNO
+        run: arduino-cli compile --fqbn arduino:avr:uno --warnings all firmware/sound_reactive_wall
