@@ -1,0 +1,875 @@
+(export 
+  (version "D")
+  (design
+    (source "sound_reactive_wall.py")
+    (date "11/03/2026 12:08 AM")
+    (tool "SKiDL (3.0.0)")
+    (sheet
+      (number 1)
+      (name "/")
+      (tstamps "/")
+      (title_block
+        (title)
+        (company)
+        (rev)
+        (date)
+        (source "sound_reactive_wall.py")
+        (comment
+          (number "1")
+          (value ""))
+        (comment
+          (number "2")
+          (value ""))
+        (comment
+          (number "3")
+          (value ""))
+        (comment
+          (number "4")
+          (value ""))
+        (comment
+          (number "5")
+          (value ""))
+        (comment
+          (number "6")
+          (value ""))
+        (comment
+          (number "7")
+          (value ""))
+        (comment
+          (number "8")
+          (value ""))
+        (comment
+          (number "9")
+          (value "")))))
+  (components
+    (comp
+      (ref "A1")
+      (value "Arduino_UNO_R3")
+      (description "Arduino UNO Microcontroller Module, release 3")
+      (footprint "Module:Arduino_UNO_R3")
+      (fields
+        (field
+          (name "Description") "Arduino UNO Microcontroller Module, release 3")
+        (field
+          (name "Footprint") "Module:Arduino_UNO_R3")
+        (field
+          (name "Datasheet") "https://www.arduino.cc/en/Main/arduinoBoardUno")
+        (field
+          (name "SKiDL Tag") "OOxRqf8Tm9")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:116"))
+      (libsource
+        (lib "MCU_Module")
+        (part "Arduino_UNO_R3"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "1408fe93-d191-59b4-b8a7-6439958651b4"))
+    (comp
+      (ref "C1")
+      (value "1000uF 10V")
+      (description "Polarized capacitor")
+      (footprint "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm")
+      (fields
+        (field
+          (name "Description") "Polarized capacitor")
+        (field
+          (name "Footprint") "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "UzxdlfMicS")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:121"))
+      (libsource
+        (lib "Device")
+        (part "C_Polarized"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "e09cee0e-d20c-5d26-b721-74d1a793f3ec"))
+    (comp
+      (ref "C2")
+      (value "100nF")
+      (description "Unpolarized capacitor")
+      (footprint "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm")
+      (fields
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "fR6fSruH0U")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:122"))
+      (libsource
+        (lib "Device")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "9c9eb768-eeca-5e62-b6b4-abfca8ebf273"))
+    (comp
+      (ref "C3")
+      (value "100nF")
+      (description "Unpolarized capacitor")
+      (footprint "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm")
+      (fields
+        (field
+          (name "Description") "Unpolarized capacitor")
+        (field
+          (name "Footprint") "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "phX5doCnDw")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:143"))
+      (libsource
+        (lib "Device")
+        (part "C"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "bbadef24-a29f-5b37-ae92-845159195565"))
+    (comp
+      (ref "F1")
+      (value "5A")
+      (description "Fuse")
+      (footprint "Fuse:Fuseholder_Clip-5x20mm_Keystone_3517_Inline_P23.11x6.76mm_D1.70mm_Horizontal")
+      (fields
+        (field
+          (name "Description") "Fuse")
+        (field
+          (name "Footprint") "Fuse:Fuseholder_Clip-5x20mm_Keystone_3517_Inline_P23.11x6.76mm_D1.70mm_Horizontal")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "TPInKHCtbk")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:120"))
+      (libsource
+        (lib "Device")
+        (part "Fuse"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "d314f0dd-24c4-5576-878e-cbae97f8a19a"))
+    (comp
+      (ref "J1")
+      (value "Screw_Terminal_01x02")
+      (description "Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)")
+      (footprint "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal")
+      (fields
+        (field
+          (name "Description") "Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)")
+        (field
+          (name "Footprint") "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "BLMWVwOnbX")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:119"))
+      (libsource
+        (lib "Connector")
+        (part "Screw_Terminal_01x02"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "4370e81f-ebd8-515e-bc60-6e026c84d4c6"))
+    (comp
+      (ref "J2")
+      (value "Screw_Terminal_01x02")
+      (description "Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)")
+      (footprint "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal")
+      (fields
+        (field
+          (name "Description") "Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)")
+        (field
+          (name "Footprint") "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "fa1l3cJe_K")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:90"))
+      (libsource
+        (lib "Connector")
+        (part "Screw_Terminal_01x02"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "4a0385e5-f478-51bf-86d7-47f05ddec70e"))
+    (comp
+      (ref "J3")
+      (value "Screw_Terminal_01x02")
+      (description "Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)")
+      (footprint "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal")
+      (fields
+        (field
+          (name "Description") "Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)")
+        (field
+          (name "Footprint") "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "eu7HEMgLuD")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:90"))
+      (libsource
+        (lib "Connector")
+        (part "Screw_Terminal_01x02"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "9930d63b-90fd-5203-9434-1a15c985dde9"))
+    (comp
+      (ref "J4")
+      (value "Screw_Terminal_01x02")
+      (description "Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)")
+      (footprint "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal")
+      (fields
+        (field
+          (name "Description") "Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)")
+        (field
+          (name "Footprint") "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "NElslGI1X1")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:90"))
+      (libsource
+        (lib "Connector")
+        (part "Screw_Terminal_01x02"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "4e9d5bf6-bd45-5ded-b920-3dfbf2b607e5"))
+    (comp
+      (ref "J5")
+      (value "Conn_01x05_Socket")
+      (description "Generic connector, single row, 01x05, script generated")
+      (footprint "Connector_PinSocket_2.54mm:PinSocket_1x05_P2.54mm_Vertical")
+      (fields
+        (field
+          (name "Description") "Generic connector, single row, 01x05, script generated")
+        (field
+          (name "Footprint") "Connector_PinSocket_2.54mm:PinSocket_1x05_P2.54mm_Vertical")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "yzwnLuIGY3")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:66"))
+      (libsource
+        (lib "Connector")
+        (part "Conn_01x05_Socket"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "4e4e26cd-c374-5a88-ac65-55b6048627f8"))
+    (comp
+      (ref "J6")
+      (value "Conn_01x03_Socket")
+      (description "Generic connector, single row, 01x03, script generated")
+      (footprint "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical")
+      (fields
+        (field
+          (name "Description") "Generic connector, single row, 01x03, script generated")
+        (field
+          (name "Footprint") "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "AGgnj9SR2w")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:66"))
+      (libsource
+        (lib "Connector")
+        (part "Conn_01x03_Socket"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "e3be5028-0121-5f94-97e5-d91c0d3d6678"))
+    (comp
+      (ref "J7")
+      (value "Conn_01x02_Pin")
+      (description "Generic connector, single row, 01x02, script generated")
+      (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
+      (fields
+        (field
+          (name "Description") "Generic connector, single row, 01x02, script generated")
+        (field
+          (name "Footprint") "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "Xy68W6rc_B")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:156"))
+      (libsource
+        (lib "Connector")
+        (part "Conn_01x02_Pin"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "101ed3c4-36dd-55f8-9052-a86b0d3f3817"))
+    (comp
+      (ref "J8")
+      (value "Conn_01x04_Socket")
+      (description "Generic connector, single row, 01x04, script generated")
+      (footprint "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical")
+      (fields
+        (field
+          (name "Description") "Generic connector, single row, 01x04, script generated")
+        (field
+          (name "Footprint") "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "BKMgiX9Dko")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:66"))
+      (libsource
+        (lib "Connector")
+        (part "Conn_01x04_Socket"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "8854b25c-6b49-5d48-b953-644025a35e18"))
+    (comp
+      (ref "Q1")
+      (value "IRLZ44N")
+      (description "47A Id, 55V Vds, 22mOhm Rds Single N-Channel HEXFET Power MOSFET, TO-220AB")
+      (footprint "Package_TO_SOT_THT:TO-220-3_Vertical")
+      (fields
+        (field
+          (name "Description") "47A Id, 55V Vds, 22mOhm Rds Single N-Channel HEXFET Power MOSFET, TO-220AB")
+        (field
+          (name "Footprint") "Package_TO_SOT_THT:TO-220-3_Vertical")
+        (field
+          (name "Datasheet") "http://www.irf.com/product-info/datasheets/data/irlz44n.pdf")
+        (field
+          (name "SKiDL Tag") "q61SY2zvyx")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:87"))
+      (libsource
+        (lib "Transistor_FET")
+        (part "IRLZ44N"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "6b5e750d-46ca-5ad5-bb90-5816d8b58c72"))
+    (comp
+      (ref "Q2")
+      (value "IRLZ44N")
+      (description "47A Id, 55V Vds, 22mOhm Rds Single N-Channel HEXFET Power MOSFET, TO-220AB")
+      (footprint "Package_TO_SOT_THT:TO-220-3_Vertical")
+      (fields
+        (field
+          (name "Description") "47A Id, 55V Vds, 22mOhm Rds Single N-Channel HEXFET Power MOSFET, TO-220AB")
+        (field
+          (name "Footprint") "Package_TO_SOT_THT:TO-220-3_Vertical")
+        (field
+          (name "Datasheet") "http://www.irf.com/product-info/datasheets/data/irlz44n.pdf")
+        (field
+          (name "SKiDL Tag") "5_6syLGhvZ")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:87"))
+      (libsource
+        (lib "Transistor_FET")
+        (part "IRLZ44N"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "2ddadb91-0256-5276-9e1e-87212bc3c316"))
+    (comp
+      (ref "Q3")
+      (value "IRLZ44N")
+      (description "47A Id, 55V Vds, 22mOhm Rds Single N-Channel HEXFET Power MOSFET, TO-220AB")
+      (footprint "Package_TO_SOT_THT:TO-220-3_Vertical")
+      (fields
+        (field
+          (name "Description") "47A Id, 55V Vds, 22mOhm Rds Single N-Channel HEXFET Power MOSFET, TO-220AB")
+        (field
+          (name "Footprint") "Package_TO_SOT_THT:TO-220-3_Vertical")
+        (field
+          (name "Datasheet") "http://www.irf.com/product-info/datasheets/data/irlz44n.pdf")
+        (field
+          (name "SKiDL Tag") "SKGHJw6p6Q")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:87"))
+      (libsource
+        (lib "Transistor_FET")
+        (part "IRLZ44N"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "eeb8d1b6-4e5c-5111-bc89-22ba3544d007"))
+    (comp
+      (ref "R1")
+      (value "220")
+      (description "Resistor")
+      (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
+      (fields
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "m7va1ltRIk")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:88"))
+      (libsource
+        (lib "Device")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "ddeac7b9-94db-5057-aec6-baea4e2c479b"))
+    (comp
+      (ref "R2")
+      (value "10k")
+      (description "Resistor")
+      (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
+      (fields
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "W2zP97Bt6R")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:89"))
+      (libsource
+        (lib "Device")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "5576f8ae-35b7-585c-a0e4-b90243b9f575"))
+    (comp
+      (ref "R3")
+      (value "220")
+      (description "Resistor")
+      (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
+      (fields
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "e9K1OF3UK2")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:88"))
+      (libsource
+        (lib "Device")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "8cd42895-00d2-5576-b5c4-a7ccf1b8489e"))
+    (comp
+      (ref "R4")
+      (value "10k")
+      (description "Resistor")
+      (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
+      (fields
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "Rru3FqA0W9")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:89"))
+      (libsource
+        (lib "Device")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "cdf69c3a-69ac-5bba-9f1d-5fb492a41ebd"))
+    (comp
+      (ref "R5")
+      (value "220")
+      (description "Resistor")
+      (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
+      (fields
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "8esLNmgbhu")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:88"))
+      (libsource
+        (lib "Device")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "729e22fd-9eb2-5ba5-9496-5b58531fbec7"))
+    (comp
+      (ref "R6")
+      (value "10k")
+      (description "Resistor")
+      (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
+      (fields
+        (field
+          (name "Description") "Resistor")
+        (field
+          (name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
+        (field
+          (name "Datasheet") "~")
+        (field
+          (name "SKiDL Tag") "XdprW5CmRh")
+        (field
+          (name "SKiDL Line") "sound_reactive_wall.py:89"))
+      (libsource
+        (lib "Device")
+        (part "R"))
+      (sheetpath
+        (names "/")
+        (tstamps "/"))
+      (tstamps "132e5712-d844-5def-8b6a-f03a1d9d3eb7")))
+  (nets
+    (net
+      (code 1)
+      (name "+5V")
+      (class "Default")
+      (node
+        (ref "A1")
+        (pin "5")
+        (pintype "POWER-OUT"))
+      (node
+        (ref "C1")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C2")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C3")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "F1")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J2")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J3")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J4")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J5")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J6")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J8")
+        (pin "1")
+        (pintype "PASSIVE")))
+    (net
+      (code 2)
+      (name "BASS_GATE")
+      (class "Default")
+      (node
+        (ref "Q1")
+        (pin "1")
+        (pintype "INPUT"))
+      (node
+        (ref "R1")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R2")
+        (pin "1")
+        (pintype "PASSIVE")))
+    (net
+      (code 3)
+      (name "BASS_LED-")
+      (class "Default")
+      (node
+        (ref "J2")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "Q1")
+        (pin "2")
+        (pintype "PASSIVE")))
+    (net
+      (code 4)
+      (name "BASS_PWM")
+      (class "Default")
+      (node
+        (ref "A1")
+        (pin "18")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "R1")
+        (pin "1")
+        (pintype "PASSIVE")))
+    (net
+      (code 5)
+      (name "EQ_OUT")
+      (class "Default")
+      (node
+        (ref "A1")
+        (pin "9")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "J5")
+        (pin "4")
+        (pintype "PASSIVE")))
+    (net
+      (code 6)
+      (name "EQ_RST")
+      (class "Default")
+      (node
+        (ref "A1")
+        (pin "19")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "J5")
+        (pin "2")
+        (pintype "PASSIVE")))
+    (net
+      (code 7)
+      (name "EQ_STROBE")
+      (class "Default")
+      (node
+        (ref "A1")
+        (pin "20")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "J5")
+        (pin "3")
+        (pintype "PASSIVE")))
+    (net
+      (code 8)
+      (name "GND")
+      (class "Default")
+      (node
+        (ref "A1")
+        (pin "29")
+        (pintype "POWER-IN"))
+      (node
+        (ref "A1")
+        (pin "6")
+        (pintype "POWER-IN"))
+      (node
+        (ref "A1")
+        (pin "7")
+        (pintype "POWER-IN"))
+      (node
+        (ref "C1")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C2")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "C3")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J1")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J5")
+        (pin "5")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J6")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J7")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J8")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "Q1")
+        (pin "3")
+        (pintype "PASSIVE"))
+      (node
+        (ref "Q2")
+        (pin "3")
+        (pintype "PASSIVE"))
+      (node
+        (ref "Q3")
+        (pin "3")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R2")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R4")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R6")
+        (pin "2")
+        (pintype "PASSIVE")))
+    (net
+      (code 9)
+      (name "LDR_ANALOG")
+      (class "Default")
+      (node
+        (ref "A1")
+        (pin "10")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "J8")
+        (pin "4")
+        (pintype "PASSIVE")))
+    (net
+      (code 10)
+      (name "LDR_DIGITAL")
+      (class "Default")
+      (node
+        (ref "A1")
+        (pin "17")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "J8")
+        (pin "3")
+        (pintype "PASSIVE")))
+    (net
+      (code 11)
+      (name "MIC_AUDIO")
+      (class "Default")
+      (node
+        (ref "J6")
+        (pin "3")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J7")
+        (pin "1")
+        (pintype "PASSIVE")))
+    (net
+      (code 12)
+      (name "MIDS_GATE")
+      (class "Default")
+      (node
+        (ref "Q2")
+        (pin "1")
+        (pintype "INPUT"))
+      (node
+        (ref "R3")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R4")
+        (pin "1")
+        (pintype "PASSIVE")))
+    (net
+      (code 13)
+      (name "MIDS_LED-")
+      (class "Default")
+      (node
+        (ref "J3")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "Q2")
+        (pin "2")
+        (pintype "PASSIVE")))
+    (net
+      (code 14)
+      (name "MIDS_PWM")
+      (class "Default")
+      (node
+        (ref "A1")
+        (pin "21")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "R3")
+        (pin "1")
+        (pintype "PASSIVE")))
+    (net
+      (code 15)
+      (name "TREBLE_GATE")
+      (class "Default")
+      (node
+        (ref "Q3")
+        (pin "1")
+        (pintype "INPUT"))
+      (node
+        (ref "R5")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "R6")
+        (pin "1")
+        (pintype "PASSIVE")))
+    (net
+      (code 16)
+      (name "TREBLE_LED-")
+      (class "Default")
+      (node
+        (ref "J4")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "Q3")
+        (pin "2")
+        (pintype "PASSIVE")))
+    (net
+      (code 17)
+      (name "TREBLE_PWM")
+      (class "Default")
+      (node
+        (ref "A1")
+        (pin "24")
+        (pintype "BIDIRECTIONAL"))
+      (node
+        (ref "R5")
+        (pin "1")
+        (pintype "PASSIVE")))
+    (net
+      (code 18)
+      (name "VIN_UNFUSED")
+      (class "Default")
+      (node
+        (ref "F1")
+        (pin "1")
+        (pintype "PASSIVE"))
+      (node
+        (ref "J1")
+        (pin "1")
+        (pintype "PASSIVE")))))

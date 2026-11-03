@@ -1,122 +1,201 @@
-from skidl import *
+"""SKiDL description of the Sound-Reactive Wall carrier PCB.
 
-# Set up library path for KiCad
-lib_search_paths[KICAD].append('/usr/share/kicad/symbols')
+An Arduino UNO reads an MSGEQ7 spectrum-analyzer module (fed from a MAX4466
+microphone) and an LDR "dark" sensor, then PWM-drives three LED filament
+channels (bass / mids / treble) through logic-level IRLZ44N low-side MOSFETs.
 
-# Create nets
-gnd = Net('GND')
-vcc5 = Net('+5V')
-vcc33 = Net('+3.3V')
+Usage:
+    python sound_reactive_wall.py            # ERC + netlist + schematic
 
-# --- Instantiate Components ---
+KiCad symbol libraries are located through, in order:
+    1. the KICAD_SYMBOL_DIR environment variable (or KICAD<N>_SYMBOL_DIR),
+    2. the common install locations listed in SYMBOL_DIR_CANDIDATES.
+"""
 
-# MCU: Arduino Uno R3 footprint shield
-uno = Part('MCU_Module', 'Arduino_UNO_R3', footprint='Module:Arduino_UNO_R3')
+import builtins
+import os
 
-# MOSFETs: 3x IRLZ44N (TO-220)
-mosfet_bass = Part('Transistor_FET', 'IRLZ44N', footprint='Package_TO_SOT_THT:TO-220-3_Vertical')
-mosfet_mids = Part('Transistor_FET', 'IRLZ44N', footprint='Package_TO_SOT_THT:TO-220-3_Vertical')
-mosfet_treble = Part('Transistor_FET', 'IRLZ44N', footprint='Package_TO_SOT_THT:TO-220-3_Vertical')
+from skidl import (
+    ERC,
+    KICAD8,
+    POWER,
+    Net,
+    Part,
+    generate_netlist,
+    generate_schematic,
+    lib_search_paths,
+    reset,
+    set_default_tool,
+)
 
-# Pull-down Resistors for MOSFETs: 3x 10k (THT)
-r_bass = Part('Device', 'R', value='10k', footprint='Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal')
-r_mids = Part('Device', 'R', value='10k', footprint='Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal')
-r_treble = Part('Device', 'R', value='10k', footprint='Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal')
+SYMBOL_DIR_CANDIDATES = [
+    "/usr/share/kicad/symbols",
+    "/usr/local/share/kicad/symbols",
+    "/Applications/KiCad/KiCad.app/Contents/SharedSupport/symbols",
+    r"C:\Program Files\KiCad\9.0\share\kicad\symbols",
+    r"C:\Program Files\KiCad\8.0\share\kicad\symbols",
+]
 
-# Decoupling Capacitor: 100nF
-c_dec = Part('Device', 'C', value='100nF', footprint='Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm')
+# Footprints
+FP_RES = "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+FP_CAP = "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm"
+FP_CAP_BULK = "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm"
+FP_FET = "Package_TO_SOT_THT:TO-220-3_Vertical"
+FP_SCREW2 = "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal"
+FP_FUSE = "Fuse:Fuseholder_Clip-5x20mm_Keystone_3517_Inline_P23.11x6.76mm_D1.70mm_Horizontal"
 
-# Main Power Input (Screw Terminal)
-power_in = Part('Connector', 'Screw_Terminal_01x02', footprint='TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal')
 
-# Filament Outputs (Screw Terminals)
-out_bass = Part('Connector', 'Screw_Terminal_01x02', footprint='TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal')
-out_mids = Part('Connector', 'Screw_Terminal_01x02', footprint='TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal')
-out_treble = Part('Connector', 'Screw_Terminal_01x02', footprint='TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal')
+def setup_library_paths():
+    """Register the KiCad symbol directory for every KiCad tool SKiDL knows.
 
-# MSGEQ7 Module Connector (5 pins: 5V, RST, STR, OUT, GND)
-msgeq7_conn = Part('Connector', 'Conn_01x05_Socket', footprint='Connector_PinSocket_2.54mm:PinSocket_1x05_P2.54mm_Vertical')
-msgeq7_conn[1].aliases += '5V'
-msgeq7_conn[2].aliases += 'RST'
-msgeq7_conn[3].aliases += 'STR'
-msgeq7_conn[4].aliases += 'OUT'
-msgeq7_conn[5].aliases += 'GND'
+    SKiDL's ``KICAD`` alias points at a different KiCad version depending on
+    the SKiDL release, so appending to only that key (as the original script
+    did) silently breaks on newer SKiDL versions.
+    """
+    dirs = [v for k, v in os.environ.items() if k.startswith("KICAD") and k.endswith("SYMBOL_DIR")]
+    dirs += [d for d in SYMBOL_DIR_CANDIDATES if os.path.isdir(d)]
+    for tool, paths in lib_search_paths.items():
+        if tool.startswith("kicad"):
+            for d in dirs:
+                if d not in paths:
+                    paths.append(d)
 
-# MAX4466 Microphone Connector (3 pins: VCC, GND, OUT)
-max4466_conn = Part('Connector', 'Conn_01x03_Socket', footprint='Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical')
-max4466_conn[1].aliases += 'VCC'
-max4466_conn[2].aliases += 'GND'
-max4466_conn[3].aliases += 'OUT'
 
-# Test point / Header for MAX4466 Audio OUT (to connect to MSGEQ7 Audio Jack)
-audio_out_tp = Part('Connector', 'Conn_01x01_Pin', footprint='Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical')
+def socket(n, *names):
+    """Pin-socket header for a plug-in module, with named pin aliases."""
+    conn = Part(
+        "Connector",
+        f"Conn_01x{n:02d}_Socket",
+        footprint=f"Connector_PinSocket_2.54mm:PinSocket_1x{n:02d}_P2.54mm_Vertical",
+    )
+    for i, name in enumerate(names, start=1):
+        conn[i].aliases += name
+    return conn
 
-# 4-Pin LDR Module Connector (4 pins: VCC, GND, DO, AO)
-ldr_conn = Part('Connector', 'Conn_01x04_Socket', footprint='Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical')
-ldr_conn[1].aliases += 'VCC'
-ldr_conn[2].aliases += 'GND'
-ldr_conn[3].aliases += 'DO'
-ldr_conn[4].aliases += 'AO'
 
-# --- Wiring ---
+def led_channel(name, gpio, vcc, gnd):
+    """One low-side PWM channel: GPIO -> 220R -> gate (10k pull-down) -> IRLZ44N.
 
-# Find specific pins on Arduino for power manually
-# The Arduino Uno R3 part has these names exactly
-uno_5v = None
-uno_3v3 = None
-uno_gnds = []
+    The series gate resistor limits the inrush current from the AVR pin into
+    the ~3 nF gate capacitance and damps ringing; the pull-down keeps the
+    filament off while the Arduino is resetting/booting.
+    """
+    gate = Net(f"{name}_GATE")
+    drain = Net(f"{name}_LED-")
+    pwm = Net(f"{name}_PWM")
 
-for p in uno.pins:
-    if p.name == '+5V':
-        uno_5v = p
-    elif p.name == '3V3':
-        uno_3v3 = p
-    elif p.name == 'GND':
-        uno_gnds.append(p)
+    fet = Part("Transistor_FET", "IRLZ44N", footprint=FP_FET)
+    r_gate = Part("Device", "R", value="220", footprint=FP_RES)
+    r_pd = Part("Device", "R", value="10k", footprint=FP_RES)
+    out = Part("Connector", "Screw_Terminal_01x02", footprint=FP_SCREW2)
 
-# Power Supply
-vcc5 += power_in[1], uno_5v, msgeq7_conn['5V'], max4466_conn['VCC'], out_bass[1], out_mids[1], out_treble[1]
-for g in uno_gnds:
-    gnd += g
-gnd += power_in[2], msgeq7_conn['GND'], max4466_conn['GND'], ldr_conn['GND'], mosfet_bass['S'], mosfet_mids['S'], mosfet_treble['S'], c_dec[2], r_bass[2], r_mids[2], r_treble[2]
-vcc33 += uno_3v3, ldr_conn['VCC']
+    pwm += gpio, r_gate[1]
+    gate += r_gate[2], r_pd[1], fet["G"]
+    gnd += r_pd[2], fet["S"]
+    drain += fet["D"], out[2]
+    vcc += out[1]
+    return fet
 
-# Decoupling cap near audio
-vcc5 += c_dec[1]
 
-# MOSFET Gate Pull-downs and Control
-r_bass[1] += mosfet_bass['G']
-r_mids[1] += mosfet_mids['G']
-r_treble[1] += mosfet_treble['G']
+def build():
+    """Create the circuit in SKiDL's default circuit and return a dict of key parts."""
+    reset()
+    # Pin the tool so output is stable across SKiDL releases; the KICAD8
+    # backend writes a schematic that opens in KiCad 7 and newer.
+    set_default_tool(KICAD8)
+    setup_library_paths()
 
-uno['D3'] += mosfet_bass['G']
-uno['D6'] += mosfet_mids['G']
-uno['D9'] += mosfet_treble['G']
+    gnd = Net("GND")
+    vcc5 = Net("+5V")
+    vin = Net("VIN_UNFUSED")
+    # The screw terminal is passive; tell ERC these nets are driven.
+    gnd.drive = POWER
+    vcc5.drive = POWER
 
-# MOSFET Drain to LED Negative (Screw Terminal Pin 2)
-mosfet_bass['D'] += out_bass[2]
-mosfet_mids['D'] += out_mids[2]
-mosfet_treble['D'] += out_treble[2]
+    # --- MCU ---
+    uno = Part("MCU_Module", "Arduino_UNO_R3", footprint="Module:Arduino_UNO_R3")
 
-# MSGEQ7 Connections
-uno['A0'] += msgeq7_conn['OUT']
-uno['D4'] += msgeq7_conn['RST']
-uno['D5'] += msgeq7_conn['STR']
+    # --- Power input: 5 V regulated supply -> fuse -> +5V rail ---
+    power_in = Part("Connector", "Screw_Terminal_01x02", footprint=FP_SCREW2)
+    fuse = Part("Device", "Fuse", value="5A", footprint=FP_FUSE)
+    c_bulk = Part("Device", "C_Polarized", value="1000uF 10V", footprint=FP_CAP_BULK)
+    c_dec = Part("Device", "C", value="100nF", footprint=FP_CAP)
 
-# LDR Connections
-uno['A1'] += ldr_conn['AO']
-uno['D2'] += ldr_conn['DO']
+    vin += power_in[1], fuse[1]
+    vcc5 += fuse[2], c_bulk[1], c_dec[1]
+    gnd += power_in[2], c_bulk[2], c_dec[2]
 
-# MAX4466 Output to Test Point
-max4466_conn['OUT'] += audio_out_tp[1]
+    # Arduino power: the regulated 5 V rail back-feeds the UNO's 5V pin.
+    vcc5 += uno["+5V"]
+    for p in uno.pins:
+        if p.name == "GND":
+            gnd += p
 
-print("Generating schematic...")
-try:
-    generate_schematic(file_='sound_reactive_wall.kicad_sch')
-    print("Schematic generated successfully!")
-except Exception as e:
-    print(f"Schematic auto-routing failed ({e}), generating a netlist instead as a fallback...")
+    # --- LED filament channels (D3/D6/D9 = three different PWM timers) ---
+    channels = {
+        "BASS": led_channel("BASS", uno["D3"], vcc5, gnd),
+        "MIDS": led_channel("MIDS", uno["D6"], vcc5, gnd),
+        "TREBLE": led_channel("TREBLE", uno["D9"], vcc5, gnd),
+    }
 
-print("Generating netlist...")
-generate_netlist(file_='sound_reactive_wall.net')
-print("Netlist generated successfully!")
+    # --- MSGEQ7 spectrum module ---
+    msgeq7 = socket(5, "5V", "RST", "STR", "OUT", "GND")
+    c_audio = Part("Device", "C", value="100nF", footprint=FP_CAP)  # local decoupling
+    vcc5 += msgeq7["5V"], c_audio[1]
+    gnd += msgeq7["GND"], c_audio[2]
+    Net("EQ_OUT").connect(uno["A0"], msgeq7["OUT"])
+    Net("EQ_RST").connect(uno["D4"], msgeq7["RST"])
+    Net("EQ_STROBE").connect(uno["D5"], msgeq7["STR"])
+
+    # --- MAX4466 microphone module ---
+    mic = socket(3, "VCC", "GND", "OUT")
+    vcc5 += mic["VCC"]
+    gnd += mic["GND"]
+    # Signal + ground header for the lead to the MSGEQ7 module's audio input.
+    # (Previously a single pin with no ground reference.)
+    audio_out = Part(
+        "Connector", "Conn_01x02_Pin",
+        footprint="Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical",
+    )
+    Net("MIC_AUDIO").connect(mic["OUT"], audio_out[1])
+    gnd += audio_out[2]
+
+    # --- LDR darkness sensor module ---
+    # Powered from 5 V: with 3.3 V the comparator's DO high level (~3.3 V) sits
+    # right at the ATmega328P's 3.0 V V_IH threshold, so D2 reads unreliably.
+    ldr = socket(4, "VCC", "GND", "DO", "AO")
+    vcc5 += ldr["VCC"]
+    gnd += ldr["GND"]
+    Net("LDR_ANALOG").connect(uno["A1"], ldr["AO"])
+    Net("LDR_DIGITAL").connect(uno["D2"], ldr["DO"])
+
+    # Mark every unused Arduino pin as intentionally unconnected.
+    for p in uno.pins:
+        if not p.is_connected():
+            p += builtins.NC  # SKiDL rebinds this on reset()
+
+    return {
+        "uno": uno, "fuse": fuse, "power_in": power_in, "msgeq7": msgeq7,
+        "mic": mic, "ldr": ldr, "audio_out": audio_out, **channels,
+    }
+
+
+def main():
+    build()
+    ERC()
+    generate_netlist(file_="sound_reactive_wall.net")
+    print("Netlist written to sound_reactive_wall.net")
+    # Draw every net as a named label rather than a wire: SKiDL's auto-router
+    # fails (RoutingFailure) on this board's large GND/+5V nets, and labels
+    # are easier to read anyway.
+    for net in builtins.default_circuit.get_nets():
+        net.stub = True
+    try:
+        generate_schematic(top_name="sound_reactive_wall", title="Sound-Reactive Wall")
+        print("Schematic written to sound_reactive_wall.kicad_sch")
+    except Exception as e:  # schematic placement/routing is best-effort
+        print(f"Schematic generation failed ({type(e).__name__}: {e}); netlist is still valid.")
+
+
+if __name__ == "__main__":
+    main()

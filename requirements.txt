@@ -1,0 +1,11 @@
+# Install skidl without its optional PCB-layout deps (kinparse/hierplace fail
+# to build on recent Pythons and are not needed here):
+#   pip install --no-deps skidl==3.0.0 && pip install -r requirements.txt
+schematizer==0.2.0
+sexpdata==1.0.2
+simp_sexp==0.3.2
+graphviz==0.21
+rich==15.0.0
+deprecation==2.1.0
+ply==3.11
+pytest

@@ -1,0 +1,30 @@
+name: circuit
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install SKiDL
+        run: |
+          pip install --no-deps skidl==3.0.0
+          pip install -r requirements.txt
+      - name: Fetch KiCad symbol libraries
+        run: |
+          git clone -q --depth 1 --branch 9.0.9 --filter=blob:none --sparse \
+            https://gitlab.com/kicad/libraries/kicad-symbols.git "$RUNNER_TEMP/kicad-symbols"
+          git -C "$RUNNER_TEMP/kicad-symbols" sparse-checkout set --no-cone \
+            /MCU_Module.kicad_sym /Transistor_FET.kicad_sym /Device.kicad_sym \
+            /Connector.kicad_sym /Connector_Generic.kicad_sym /power.kicad_sym
+          echo "KICAD_SYMBOL_DIR=$RUNNER_TEMP/kicad-symbols" >> "$GITHUB_ENV"
+      - name: Connectivity tests
+        run: pytest -q
+      - name: Generate netlist + schematic
+        run: python sound_reactive_wall.py | tee gen.txt && ! grep -q "generation failed" gen.txt
